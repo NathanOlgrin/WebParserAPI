@@ -5,6 +5,4 @@ pluginManagement {
 	}
 }
 rootProject.name = 'WebParserAPI'
-include 'WebParserAPI-Eureka'
-include 'WebParserAPICore'
-
+include 'WebParserAPI_Eureka', 'WebParserAPI_Core'
