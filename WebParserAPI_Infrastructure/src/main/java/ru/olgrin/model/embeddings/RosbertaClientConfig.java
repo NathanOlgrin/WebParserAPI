@@ -24,8 +24,10 @@ public class RosbertaClientConfig {
         }
         return RestClient.builder()
                 .baseUrl(rosbertaUrl)
-                .defaultHeader("Authorization", "Bearer" + hfToken)
+                .defaultHeader("Authorization", "Bearer " + hfToken)
                 .build();
     }
+
+
 
 }

@@ -5,26 +5,29 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.AbstractEmbeddingModel;
-import org.springframework.ai.embedding.Embedding;
-import org.springframework.ai.embedding.EmbeddingRequest;
-import org.springframework.ai.embedding.EmbeddingResponse;
+import org.springframework.ai.embedding.*;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
+@Primary
+//@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RosbertaEmbeddingModel extends AbstractEmbeddingModel {
 
-    RestClient restClient;
+    private final RestClient restClient;
+
+    public RosbertaEmbeddingModel(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
     @Override
     public @NotNull EmbeddingResponse call(@NotNull EmbeddingRequest request) {
         var payload = Map.of(
@@ -40,6 +43,14 @@ public class RosbertaEmbeddingModel extends AbstractEmbeddingModel {
                 .body(new ParameterizedTypeReference<>() {});
 
         return new EmbeddingResponse(List.of(new Embedding(responseList, 0)));
+    }
+
+
+
+    @Override
+    public List<Double> embed(String text) {
+        return call(new EmbeddingRequest(Collections.singletonList(text), null))
+                .getResult().getOutput();
     }
 
     @Override
