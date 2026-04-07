@@ -1,17 +1,17 @@
-package ru.olgrin.rest;
+package ru.olgrin.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.olgrin.usecase.ParseWebsiteUseCaseService;
+import ru.olgrin.usecase.ParseWebsiteUseCase;
+
 
 import java.util.List;
 
 @RestController
-//@RequestMapping("/core")
-public class CoreParseController {
+public class ParseController {
 
-    private final ParseWebsiteUseCaseService parseWebsiteUseCase;
+    private final ParseWebsiteUseCase parseWebsiteUseCase;
 
-    public CoreParseController(ParseWebsiteUseCaseService parseWebsiteUseCase) {
+    public ParseController(ParseWebsiteUseCase parseWebsiteUseCase) {
         this.parseWebsiteUseCase = parseWebsiteUseCase;
     }
 
