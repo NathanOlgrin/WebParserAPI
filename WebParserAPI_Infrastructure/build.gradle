@@ -19,22 +19,25 @@ repositories {
 }
 
 dependencies {
+    implementation project(":WebParserAPI_Core")
     implementation("org.jsoup:jsoup:1.22.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
     implementation("org.seleniumhq.selenium:selenium-java:4.20.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation project(':WebParserAPI_Core')
-    implementation('org.springframework.ai:spring-ai-qdrant-store-spring-boot-starter')
+//    implementation('org.springframework.ai:spring-ai-qdrant-store')
     implementation platform('org.springframework.ai:spring-ai-bom:1.0.0-M1')
     implementation('org.springframework.ai:spring-ai-openai-spring-boot-starter')
-    implementation('org.springframework.data:spring-data-jpa')
     implementation('org.projectlombok:lombok:1.18.34')
     implementation('org.springframework.ai:spring-ai-openai-spring-boot-starter')
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+//    implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
 }
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.0"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
+//        mavenBom "org.springframework.grpc:spring-grpc-dependencies:0.3.0"
     }
 }
 

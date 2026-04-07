@@ -1,5 +1,8 @@
 package ru.olgrin.controller;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,11 +14,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class ApiController {
-    private final RestTemplate restTemplate = new RestTemplate();
-    private final String coreUrl = "http://localhost:8080/core/parse";
+    private final InfrastructureClient client;
+
+    public ApiController(InfrastructureClient client) {
+        this.client = client;
+    }
+
 
     @GetMapping("/parse")
     public List<String> parse(@RequestParam String url){
-        return restTemplate.getForObject(coreUrl + "?url=" + url, List.class);
+        return client.parse(url);
+    }
+
+    @GetMapping("/embeddings")
+    public List<float[]> embed(@RequestParam List<String> text){
+        return client.embed(text);
+    }
+
+    @GetMapping("/parse-and-embeddings")
+    public List<float[]> parseAndEmbed(@RequestParam String url){
+        return client.parseAndEmbed(url);
     }
 }

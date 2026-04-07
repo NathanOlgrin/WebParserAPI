@@ -1,0 +1,35 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /infrastructure
+
+spring:
+  application:
+    name: webparserapi-infrastructure
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      base-url: https://openai.com
+      chat:
+        enabled: true
+        options:
+          model: gpt-4o
+      embedding:
+        enabled: true
+        options:
+          model: text-embedding-3-small
+#  vectorstore:
+#    qdrant:
+#      host: localhost
+#      port: 6334
+#      use-grpc: true
+
+huggingface:
+  token: ${HUGGINGFACE_TOKEN}
+  rosberta:
+    url: https://router.huggingface.co/hf-inference/models/ai-forever/ru-en-RoSBERTa
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
