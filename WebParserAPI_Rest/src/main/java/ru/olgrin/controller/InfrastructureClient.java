@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import ru.olgrin.DTO.SaveVectorsResponse;
 
 import java.util.List;
 
@@ -37,10 +38,25 @@ public class InfrastructureClient {
 
     public List<float[]> parseAndEmbed(String url) {
         return restTemplate.exchange(
-                "/infrastructure/parse-and-embeddings?url=" + url,
+                "/infrastructure/parse-embeddings?url=" + url,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<float[]>>() {}
+        ).getBody();
+    }
+
+    public SaveVectorsResponse saveVectors(SaveVectorsResponse vectors){
+        return restTemplate.exchange("/infrastructure/save",
+                HttpMethod.POST,
+                new HttpEntity<>(vectors),
+                new ParameterizedTypeReference<ru.olgrin.DTO.SaveVectorsResponse>() {}
+        ).getBody();
+    }
+    public SaveVectorsResponse parseAndEmbedAndSaveVectors(String url){
+        return restTemplate.exchange("/infrastructure/parse-embeddings-save",
+                HttpMethod.POST,
+                new HttpEntity<>(url),
+                new ParameterizedTypeReference<SaveVectorsResponse>() {}
         ).getBody();
     }
 }
