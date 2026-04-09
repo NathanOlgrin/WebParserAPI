@@ -3,6 +3,7 @@ server:
   servlet:
     context-path: /infrastructure
 
+<<<<<<< HEAD
 spring:
   application:
     name: webparserapi-infrastructure
@@ -28,6 +29,9 @@ huggingface:
   token: ${HUGGINGFACE_TOKEN}
   rosberta:
     url: https://router.huggingface.co/hf-inference/models/ai-forever/ru-en-RoSBERTa
+=======
+#ДОБАВИТЬ ДАННЫЕ ИЗ application-infrastructure.txt!!!
+>>>>>>> ed1bc19 (Изменение application.yml инфраструктуры)
 
 eureka:
   client:
