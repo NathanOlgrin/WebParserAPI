@@ -16,7 +16,7 @@ public class ParseAndEmbeddingController {
         this.parseAndEmbedUseCase = parseAndEmbedUseCase;
     }
 
-    @GetMapping("/parse-and-embeddings")
+    @GetMapping("/parse-embeddings")
     public List<float[]> generate(@RequestParam String url) throws Exception {
         return parseAndEmbedUseCase.execute(url);
     }
