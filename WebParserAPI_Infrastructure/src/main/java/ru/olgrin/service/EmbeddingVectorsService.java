@@ -21,12 +21,7 @@ public class EmbeddingVectorsService implements EmbeddingVectorsPort {
     public List<float[]> createEmbeddingVectors(List<String> text) {
         List<float[]> embeddingVectorsList = new ArrayList<>();
         for (int i = 0; i < text.size(); i++){
-            List<Double> doubles = model.embed(text.get(i));
-            float[] floatArray = new float[doubles.size()];
-            for (int j = 0; j < doubles.size(); j++) {
-                floatArray[j] = doubles.get(j).floatValue();
-            }
-            embeddingVectorsList.add(floatArray);
+            embeddingVectorsList.add(model.embed(text.get(i)));
         }
 
         return embeddingVectorsList;
