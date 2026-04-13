@@ -1,9 +1,10 @@
 package ru.olgrin.model.embeddings;
 
-import groovyjarjarantlr4.v4.runtime.misc.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.*;
 import org.springframework.context.annotation.Primary;
@@ -16,9 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @Primary
-//@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RosbertaEmbeddingModel extends AbstractEmbeddingModel {
 
@@ -30,31 +31,43 @@ public class RosbertaEmbeddingModel extends AbstractEmbeddingModel {
 
     @Override
     public @NotNull EmbeddingResponse call(@NotNull EmbeddingRequest request) {
-        var payload = Map.of(
-                "inputs", "search_query: " + request.getInstructions().get(0),
-                "parametrs",
-                Map.of("pooling_method", "cls", "normalize_embeddings", true)
-        );
+        List<String> inputs = request.getInstructions();
 
-        List<Double> responseList = restClient.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(payload)
-                .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
+        List<Embedding> embeddings = inputs.stream()
+                .map(text -> {
+                    var payload = Map.of("inputs", text);
 
-        return new EmbeddingResponse(List.of(new Embedding(responseList, 0)));
+                    List<Double> embedding = restClient.post()
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .body(payload)
+                            .retrieve()
+                            .body(new ParameterizedTypeReference<List<Double>>() {
+                            });
+
+                    float[] result = new float[embedding.size()];
+                    for (int i = 0; i < embedding.size(); i++) {
+                        result[i] = embedding.get(i).floatValue();
+                    }
+
+                    return new Embedding(result, 0);
+                })
+                .toList();
+
+        log.info("Embedding size: {}", embeddings.size());
+
+        return new EmbeddingResponse(embeddings);
     }
 
 
 
     @Override
-    public List<Double> embed(String text) {
+    public float[] embed(String text) {
         return call(new EmbeddingRequest(Collections.singletonList(text), null))
                 .getResult().getOutput();
     }
 
     @Override
-    public @NotNull List<Double> embed(@NotNull Document document) {
+    public float[] embed(@NotNull Document document) {
         return call(new EmbeddingRequest(List.of(document.getFormattedContent()), null))
                 .getResult().getOutput();
     }
