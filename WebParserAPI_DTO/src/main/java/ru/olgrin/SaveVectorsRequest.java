@@ -13,6 +13,9 @@ public class SaveVectorsRequest {
         this.items = items;
     }
 
+    public SaveVectorsRequest() {
+    }
+
     public String getUrl() {
         return url;
     }

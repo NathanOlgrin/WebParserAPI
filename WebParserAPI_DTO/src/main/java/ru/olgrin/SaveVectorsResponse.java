@@ -9,6 +9,9 @@ public class SaveVectorsResponse {
         this.failed = failed;
     }
 
+    public SaveVectorsResponse() {
+    }
+
     public int getSavedCount() {
         return saved;
     }
