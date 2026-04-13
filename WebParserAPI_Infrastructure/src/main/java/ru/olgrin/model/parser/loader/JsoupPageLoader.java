@@ -14,10 +14,13 @@ public class JsoupPageLoader implements PageLoader {
 //        String html = new String(bytes, "windows-1251");
 //        return html;
 
-        return org.jsoup.Jsoup.connect(url)
-                .userAgent("Chrome/146.0.7680.165 Safari/537.36")
+        String html = org.jsoup.Jsoup.connect(url)
+                .userAgent("Chrome/139.0.7258.155 Safari/537.36")
                 .referrer("https://www.google.com/")
                 .get()
                 .html();
+
+        System.out.println(html);
+        return html;
     }
 }
