@@ -3,14 +3,12 @@ server:
   servlet:
     context-path: /infrastructure
 
-<<<<<<< HEAD
 spring:
   application:
     name: webparserapi-infrastructure
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
-      base-url: https://openai.com
       chat:
         enabled: true
         options:
@@ -19,19 +17,19 @@ spring:
         enabled: true
         options:
           model: text-embedding-3-small
-#  vectorstore:
-#    qdrant:
-#      host: localhost
-#      port: 6334
-#      use-grpc: true
+qdrant:
+  host: localhost
+  port: 6334
+  api-key: ""
+  collection-name: "test_collection"
+  use-tls: false
+  initialize-schema: true
+  use-grpc: true
 
 huggingface:
-  token: ${HUGGINGFACE_TOKEN}
+  token: ${HUGGINGFACE_API_KEY}
   rosberta:
     url: https://router.huggingface.co/hf-inference/models/ai-forever/ru-en-RoSBERTa
-=======
-#ДОБАВИТЬ ДАННЫЕ ИЗ application-infrastructure.txt!!!
->>>>>>> ed1bc19 (Изменение application.yml инфраструктуры)
 
 eureka:
   client:
