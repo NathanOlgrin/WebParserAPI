@@ -1,10 +1,6 @@
 package ru.olgrin.controller;
 
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -39,7 +35,7 @@ public class ApiController {
     }
 
     @PostMapping("/parse-embeddings-save")
-    public ru.olgrin.DTO.SaveVectorsResponse parseAndEmbedAndSaveVectors(@RequestBody String url){
-        return client.parseAndEmbedAndSaveVectors(url);
+    public ru.olgrin.DTO.SaveVectorsResponse parseAndEmbedAndSaveVectors(@RequestBody ru.olgrin.DTO.SaveVectorsRequest request){
+        return client.parseAndEmbedAndSaveVectors(request.getUrl());
     }
 }
