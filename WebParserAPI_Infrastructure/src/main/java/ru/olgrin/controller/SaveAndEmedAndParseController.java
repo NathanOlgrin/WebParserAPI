@@ -1,8 +1,6 @@
 package ru.olgrin.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.olgrin.ports.out.model.VectorSaveResult;
 import ru.olgrin.usecase.SaveAndEmbedAndParseUseCase;
 
@@ -15,8 +13,8 @@ public class SaveAndEmedAndParseController {
         this.useCase = useCase;
     }
 
-    @GetMapping("/parse-embeddings-save")
-    public VectorSaveResult save(@RequestParam String url){
+    @PostMapping("/parse-embeddings-save")
+    public VectorSaveResult save(@RequestBody String url){
         return useCase.execute(url);
     }
 }
