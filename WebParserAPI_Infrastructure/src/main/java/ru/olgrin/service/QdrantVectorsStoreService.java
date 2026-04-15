@@ -7,6 +7,7 @@ import org.springframework.ai.vectorstore.qdrant.QdrantVectorStore;
 import org.springframework.stereotype.Service;
 import ru.olgrin.ports.out.VectorStorePort;
 import ru.olgrin.ports.out.model.VectorData;
+import ru.olgrin.ports.out.model.VectorDocument;
 import ru.olgrin.ports.out.model.VectorSaveResult;
 
 import java.util.List;
@@ -18,8 +19,11 @@ public class QdrantVectorsStoreService implements VectorStorePort {
 
     private final QdrantVectorStore vectorStore;
 
-    public QdrantVectorsStoreService(QdrantVectorStore vectorStore) {
+    private final IncidentEmbeddingService incidentEmbeddingService;
+
+    public QdrantVectorsStoreService(QdrantVectorStore vectorStore, IncidentEmbeddingService incidentEmbeddingService) {
         this.vectorStore = vectorStore;
+        this.incidentEmbeddingService = incidentEmbeddingService;
     }
 
     @Override
@@ -43,5 +47,19 @@ public class QdrantVectorsStoreService implements VectorStorePort {
             log.error("Error saving vectors to Qdrant ", e);
             throw e;
         }
+    }
+
+    @Override
+    public List<VectorDocument> search(String query, Integer topK) {
+        System.out.println("Question: " + query +"; topK: " + topK);
+        List<Document> results = incidentEmbeddingService.searchSimilarIncidents(query, topK);
+        System.out.println("Results: " + results.get(0).getText());
+        return results.stream()
+                .map(d -> new VectorDocument(
+                        d.getId(),
+                        d.getText(),
+                        d.getScore()
+                ))
+                .toList();
     }
 }
