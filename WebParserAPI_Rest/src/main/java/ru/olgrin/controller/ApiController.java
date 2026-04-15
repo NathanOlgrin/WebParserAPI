@@ -1,7 +1,10 @@
 package ru.olgrin.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.olgrin.QuestionRequest;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -37,5 +40,14 @@ public class ApiController {
     @PostMapping("/parse-embeddings-save")
     public ru.olgrin.DTO.SaveVectorsResponse parseAndEmbedAndSaveVectors(@RequestBody ru.olgrin.DTO.SaveVectorsRequest request){
         return client.parseAndEmbedAndSaveVectors(request.getUrl());
+    }
+
+    @PostMapping(value = "/ask",
+            consumes = "application/json;charset=UTF-8",
+            produces = "application/json;charset=UTF-8")
+    public String parseAndEmbedAndSaveVectors(@RequestBody QuestionRequest request){
+        System.out.println("QUESTION RAW: " + request.getQuestion());
+        System.out.println("QUESTION UTF8: " + new String(request.getQuestion().getBytes(StandardCharsets.UTF_8)));
+        return client.askForChatClient(request);
     }
 }
