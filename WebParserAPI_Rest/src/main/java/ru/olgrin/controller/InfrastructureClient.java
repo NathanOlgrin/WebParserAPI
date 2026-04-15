@@ -2,11 +2,15 @@ package ru.olgrin.controller;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.olgrin.DTO.SaveVectorsResponse;
+import ru.olgrin.QuestionRequest;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Component
@@ -59,4 +63,18 @@ public class InfrastructureClient {
                 new ParameterizedTypeReference<SaveVectorsResponse>() {}
         ).getBody();
     }
+
+    public String askForChatClient(QuestionRequest questionRequest){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        HttpEntity<QuestionRequest> entity = new HttpEntity<>(questionRequest, headers);
+
+        return restTemplate.exchange("/infrastructure/ask",
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<String>() {}
+        ).getBody();
+    }
+
 }
