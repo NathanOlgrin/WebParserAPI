@@ -2,6 +2,10 @@ server:
   port: 8082
   servlet:
     context-path: /infrastructure
+    encoding:
+       charset: UTF-8
+       enabled: true
+       force: true
 
 spring:
   application:
@@ -11,6 +15,8 @@ spring:
       api-key: ${OPENAI_API_KEY}
       chat:
         enabled: true
+        temperature: 1
+        max-completion-tokens: 1000
         options:
           model: gpt-4o
       embedding:
