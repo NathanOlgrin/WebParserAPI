@@ -4,6 +4,8 @@ import ru.olgrin.domain.DocumentChunk;
 import ru.olgrin.domain.Embedding;
 
 public class VectorData {
+
+    /*класс, описывающий данные для сохранения в векторную БД*/
     DocumentChunk documentChunk;
     Embedding embedding;
 
