@@ -33,6 +33,10 @@ public class RosbertaEmbeddingModel extends AbstractEmbeddingModel {
     public @NotNull EmbeddingResponse call(@NotNull EmbeddingRequest request) {
         List<String> inputs = request.getInstructions();
 
+        if (inputs == null || inputs.isEmpty()) {
+            throw new IllegalArgumentException("Empty embedding request");
+        }
+
         List<Embedding> embeddings = inputs.stream()
                 .map(text -> {
                     var payload = Map.of("inputs", text);
@@ -62,12 +66,14 @@ public class RosbertaEmbeddingModel extends AbstractEmbeddingModel {
 
     @Override
     public float[] embed(String text) {
+        System.out.println("Embedding text: " + text);
         return call(new EmbeddingRequest(Collections.singletonList(text), null))
                 .getResult().getOutput();
     }
 
     @Override
     public float[] embed(@NotNull Document document) {
+        System.out.println("Embedding text: " + document.getText());
         return call(new EmbeddingRequest(List.of(document.getFormattedContent()), null))
                 .getResult().getOutput();
     }
